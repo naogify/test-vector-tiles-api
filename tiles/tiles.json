@@ -6,12 +6,12 @@
   "type": "overlay",
   "format": "mvt",
   "attribution": null,
-  "minzoom": 0,
-  "maxzoom": 18,
+  "minzoom": 4,
+  "maxzoom": 20,
   "center": [
-    139.716568,
-    35.670127,
-    18
+    139.757595,
+    35.66692,
+    20
   ],
   "bounds": [
     139.711909,
