@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>カメラで撮影してEXIF取得</title>
+  <style>
+    body{font-family:system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; margin:16px;}
+    header{font-weight:700; font-size:1.25rem; margin-bottom:12px}
+    .row{display:flex; gap:16px; flex-wrap:wrap}
+    .card{border:1px solid #ddd; border-radius:12px; padding:12px; flex:1 1 320px; min-width:300px;}
+    img{max-width:100%; height:auto; border-radius:10px; display:block}
+    table{border-collapse:collapse; width:100%;}
+    th,td{border-bottom:1px solid #eee; padding:6px 8px; text-align:left; font-size:14px}
+    .muted{opacity:.7; font-size:12px}
+    button{padding:10px 14px; border-radius:10px; border:1px solid #ddd; background:#fff; font-weight:600}
+    .ok{color:#0a7}
+    .warn{color:#a70}
+  </style>
+</head>
+<body>
+  <header>スマホのカメラで撮影 → EXIF（シャッター速度, F値, ISO など）を表示</header>
+
+  <div class="row">
+    <div class="card">
+      <p class="muted">A: 一番安定（iOS/Android）</p>
+      <input id="file" type="file" accept="image/*;capture=camera" />
+      <p class="muted">※ iOS/Safari ではこの方法が確実。撮影後の画像からEXIFを読む。</p>
+    </div>
+
+    <div class="card">
+      <p class="muted">B: ブラウザのカメラAPI（対応端末のみ）</p>
+      <video id="v" playsinline autoplay muted style="width:100%; border-radius:10px; background:#000; aspect-ratio:3/4"></video>
+      <div style="display:flex; gap:8px; margin-top:8px">
+        <button id="openCam">カメラ開始</button>
+        <button id="shot">撮影</button>
+      </div>
+      <canvas id="c" style="display:none"></canvas>
+      <p id="icStatus" class="muted"></p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:16px">
+    <div class="card">
+      <h3 style="margin:0 0 8px">プレビュー</h3>
+      <img id="preview" alt="preview" />
+    </div>
+
+    <div class="card">
+      <h3 style="margin:0 0 8px">EXIF 情報</h3>
+      <table id="exifTable"></table>
+      <p class="muted">※ 端末やブラウザによってEXIFが付かない場合があります（特にB方式）。</p>
+    </div>
+  </div>
+
+  <!-- exifr: EXIF をパースする軽量ライブラリ -->
+  <script src="https://unpkg.com/exifr/dist/full.umd.js"></script>
+  <script>
+    const fileInput = document.getElementById('file');
+    const imgEl = document.getElementById('preview');
+    const table = document.getElementById('exifTable');
+    const v = document.getElementById('v');
+    const c = document.getElementById('c');
+    const openBtn = document.getElementById('openCam');
+    const shotBtn = document.getElementById('shot');
+    const icStatus = document.getElementById('icStatus');
+
+    function setPreviewFromBlob(blob){
+      const url = URL.createObjectURL(blob);
+      imgEl.src = url;
+      imgEl.onload = () => URL.revokeObjectURL(url);
+    }
+
+    function renderTable(meta){
+      table.innerHTML = '';
+      const rows = [];
+      function push(k, v){ rows.push([k, v ?? '—']); }
+      // よく使う項目
+      push('Camera', meta.Model || meta.Make || meta['XMP:Model']);
+      push('Lens', meta.LensModel || meta['XMP:LensModel']);
+      push('Date', meta.DateTimeOriginal || meta.CreateDate);
+      push('ExposureTime (秒)', meta.ExposureTime);
+      push('ShutterSpeedValue (EV)', meta.ShutterSpeedValue);
+      push('FNumber (F値)', meta.FNumber);
+      push('ApertureValue (AV)', meta.ApertureValue);
+      push('ISO', meta.ISO || meta.ISOSpeedRatings);
+      push('FocalLength (mm)', meta.FocalLength);
+      push('ExposureProgram', meta.ExposureProgram);
+      push('ExposureMode', meta.ExposureMode);
+      push('Flash', meta.Flash);
+      push('WhiteBalance', meta.WhiteBalance);
+      push('MeteringMode', meta.MeteringMode);
+      push('GPSLatitude', meta.GPSLatitude);
+      push('GPSLongitude', meta.GPSLongitude);
+
+      for(const [k,v] of rows){
+        const tr = document.createElement('tr');
+        const th = document.createElement('th'); th.textContent = k; tr.appendChild(th);
+        const td = document.createElement('td'); td.textContent = typeof v === 'object' ? JSON.stringify(v) : v; tr.appendChild(td);
+        table.appendChild(tr);
+      }
+    }
+
+    async function handleBlob(blob){
+      setPreviewFromBlob(blob);
+      try{
+        const meta = await exifr.parse(blob, { tiff:true, ifd0:true, exif:true, gps:true, xmp:true, iptc:false, translateKeys:true });
+        renderTable(meta || {});
+      }catch(e){
+        console.error(e);
+        table.innerHTML = '<tr><td>EXIF 解析に失敗しました</td></tr>';
+      }
+    }
+
+    // A: input capture で撮影 → 画像のEXIFを読む
+    fileInput.addEventListener('change', async (e)=>{
+      const f = e.target.files?.[0];
+      if(!f) return;
+      await handleBlob(f);
+    });
+
+    // B: getUserMedia + ImageCapture（対応端末のみ）
+    let mediaStream, track, imageCapture;
+    async function startCam(){
+      try{
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+        v.srcObject = mediaStream;
+        track = mediaStream.getVideoTracks()[0];
+        if('ImageCapture' in window){
+          imageCapture = new ImageCapture(track);
+          icStatus.textContent = 'ImageCapture 利用可';
+          icStatus.className = 'ok';
+          // 取れる設定値（端末依存）
+          try{
+            const caps = await imageCapture.getPhotoCapabilities();
+            // ここで caps.exposureCompensation 等を確認可能。UI化は必要に応じて。
+            console.log('PhotoCapabilities', caps);
+          }catch{}
+        }else{
+          icStatus.textContent = 'ImageCapture 非対応（EXIFは付きにくい）';
+          icStatus.className = 'warn';
+        }
+      }catch(err){
+        icStatus.textContent = 'カメラ起動に失敗: ' + err.message;
+        icStatus.className = 'warn';
+      }
+    }
+
+    async function takeShot(){
+      if(imageCapture && imageCapture.takePhoto){
+        try{
+          const blob = await imageCapture.takePhoto();
+          await handleBlob(blob); // 端末によりEXIFが無い場合あり
+        }catch(err){
+          console.error(err);
+        }
+        return;
+      }
+      // フォールバック: Canvas に描画（EXIFは消えることが多い）
+      if(v.videoWidth){
+        c.width = v.videoWidth; c.height = v.videoHeight;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(v, 0, 0);
+        c.toBlob((blob)=>{ if(blob) handleBlob(blob); }, 'image/jpeg', 0.95);
+      }
+    }
+
+    openBtn.addEventListener('click', startCam);
+    shotBtn.addEventListener('click', takeShot);
+  </script>
+</body>
+</html>
