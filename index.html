@@ -1,106 +1,49 @@
 <!doctype html>
 <html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>京都 週間予報（webcal購読）</title>
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans JP", sans-serif; margin: 24px; line-height: 1.6; }
-      h1 { font-size: 20px; margin: 0 0 12px; }
-      p { margin: 0 0 16px; color: #333; }
-      .grid { display: grid; gap: 12px; max-width: 720px; }
-      .card { border: 1px solid #ddd; border-radius: 12px; padding: 14px; }
-      .title { font-weight: 700; margin-bottom: 8px; }
-      .btns { display: flex; gap: 10px; flex-wrap: wrap; }
-      button, a.btn {
-        appearance: none; border: 0; border-radius: 10px; padding: 10px 12px;
-        background: #111; color: #fff; cursor: pointer; font-weight: 700; text-decoration: none;
-      }
-      a.link { color: #0b57d0; word-break: break-all; }
-      .note { font-size: 12px; color: #666; margin-top: 18px; max-width: 720px; }
-      code { background: #f5f5f5; padding: 2px 6px; border-radius: 6px; }
-    </style>
-  </head>
-  <body>
-    <h1>京都 週間予報（webcal購読）</h1>
-    <p>ボタンを押すと <code>webcal://</code> でカレンダー購読を開きます。</p>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>京都 週間予報（webcal）</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Noto Sans JP", sans-serif;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 12px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
 
-    <div class="grid" id="list"></div>
+<h1>京都 週間予報をカレンダーに追加</h1>
 
-    <div class="note">
-      <div>※ ブラウザ/端末によっては、ボタン押下後にカレンダーアプリの選択画面が出ます。</div>
-      <div>※ うまく開かない場合は「直接リンク」をコピーして、カレンダーの「URLで購読」に貼り付けてください。</div>
-    </div>
+<button onclick="location.href='webcal://naogify.github.io/test-vector-tiles-api/kyoto-weekly-emoji.ics'">
+  😊 絵文字つき週間予報
+</button>
 
-    <script>
-      const items = [
-        {
-          name: "京都 週間予報（絵文字）",
-          https: "https://naogify.github.io/test-vector-tiles-api/kyoto-weekly-emoji.ics",
-        },
-        {
-          name: "京都 週間予報（上着）",
-          https: "https://naogify.github.io/test-vector-tiles-api/kyoto-weekly-uwagi.ics",
-        },
-        {
-          name: "京都 週間予報（通常）",
-          https: "https://naogify.github.io/test-vector-tiles-api/kyoto-weekly.ics",
-        },
-      ];
+<button onclick="location.href='webcal://naogify.github.io/test-vector-tiles-api/kyoto-weekly-uwagi.ics'">
+  🧥 上着おすすめ週間予報
+</button>
 
-      function toWebcal(url) {
-        // https://... -> webcal://...
-        return url.replace(/^https?:\/\//i, "webcal://");
-      }
+<button onclick="location.href='webcal://naogify.github.io/test-vector-tiles-api/kyoto-weekly.ics'">
+  ☀️ 通常の週間予報
+</button>
 
-      function openWebcal(url) {
-        const webcal = toWebcal(url);
-        // iOS/Safari等: location.href が一番素直
-        window.location.href = webcal;
-      }
-
-      const list = document.getElementById("list");
-
-      for (const it of items) {
-        const card = document.createElement("div");
-        card.className = "card";
-
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = it.name;
-
-        const btns = document.createElement("div");
-        btns.className = "btns";
-
-        const btn = document.createElement("button");
-        btn.textContent = "webcalで購読";
-        btn.onclick = () => openWebcal(it.https);
-
-        const link = document.createElement("a");
-        link.className = "btn";
-        link.textContent = "直接リンク（https）";
-        link.href = it.https;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-
-        const webcalLink = document.createElement("a");
-        webcalLink.className = "link";
-        webcalLink.href = toWebcal(it.https);
-        webcalLink.textContent = toWebcal(it.https);
-
-        btns.appendChild(btn);
-        btns.appendChild(link);
-
-        card.appendChild(title);
-        card.appendChild(btns);
-
-        const p = document.createElement("p");
-        p.style.margin = "10px 0 0";
-        p.innerHTML = 'コピー用: <a class="link" href="' + toWebcal(it.https) + '">' + webcalLink.textContent + "</a>";
-        card.appendChild(p);
-
-        list.appendChild(card);
-      }
-    </script>
-  </body>
+</body>
 </html>
