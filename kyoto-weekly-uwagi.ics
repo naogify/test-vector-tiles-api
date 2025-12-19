@@ -1,0 +1,91 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Geolonia//JMA Weekly Forecast to iCal (Uwagi)//JA
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:京都 週間天気予報（上着）
+X-WR-TIMEZONE:Asia/Tokyo
+BEGIN:VEVENT
+UID:f329f728fefed664df848334c88f68dcb4817900@geolonia.local
+DTSTAMP:20251219T215122Z
+DTSTART;VALUE=DATE:20251220
+DTEND;VALUE=DATE:20251221
+SUMMARY:☁️ 京都: 曇時々晴 / （気温不明）
+DESCRIPTION:☁️ 天気: 曇時々晴（コード 201）\n\n🧥 おすすめ上着: （気温不明）\n\n発表官署: 京都地方気象台\
+ n発表日時: 2025-12-19T17:00:00+09:00\n対象: 京都（気温） / 京都府南部（天気・降水確率）
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:9459ba60fbe546a354d95cb3f16a22b5648f908f@geolonia.local
+DTSTAMP:20251219T215122Z
+DTSTART;VALUE=DATE:20251221
+DTEND;VALUE=DATE:20251222
+SUMMARY:☔ 京都: 雨後曇 / ☔80% / ↑15℃ ↓8℃ 🧥 / ジャケット / ナイロンパーカ
+DESCRIPTION:☔ 天気: 雨後曇（コード 313）\n☔ 降水確率: 80%\n🧥 気温: ↑ 最高: 15℃ / ↓ 最低: 8
+ ℃\n\n🧥 おすすめ上着: ジャケット / ナイロンパーカ\n\n発表官署: 京都地方気象台\n発表日時: 2025-12-19T17:
+ 00:00+09:00\n対象: 京都（気温） / 京都府南部（天気・降水確率）
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:82a6c41643f2010b304bd81ec54d73c02a9d020d@geolonia.local
+DTSTAMP:20251219T215122Z
+DTSTART;VALUE=DATE:20251222
+DTEND;VALUE=DATE:20251223
+SUMMARY:☁️ 京都: 曇時々晴 / 30% / ↑11℃ ↓4℃ 🥶 / ✅ / フリース / ブルゾン
+DESCRIPTION:☁️ 天気: 曇時々晴（コード 201）\n 降水確率: 30%\n🥶 気温: ↑ 最高: 11℃ / ↓ 最低: 
+ 4℃\n✅ 信頼度: A\n\n🧥 おすすめ上着: フリース / ブルゾン\n\n発表官署: 京都地方気象台\n発表日時: 2025-12
+ -19T17:00:00+09:00\n対象: 京都（気温） / 京都府南部（天気・降水確率）
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:84880f2723c579005be0e152947892e3e9571758@geolonia.local
+DTSTAMP:20251219T215122Z
+DTSTART;VALUE=DATE:20251223
+DTEND;VALUE=DATE:20251224
+SUMMARY:☁️ 京都: 曇時々晴 / 30% / ↑13℃ ↓2℃ 🥶 / ✅ / フリース / ブルゾン
+DESCRIPTION:☁️ 天気: 曇時々晴（コード 201）\n 降水確率: 30%\n🥶 気温: ↑ 最高: 13℃ / ↓ 最低: 
+ 2℃\n✅ 信頼度: A\n\n🧥 おすすめ上着: フリース / ブルゾン\n\n発表官署: 京都地方気象台\n発表日時: 2025-12
+ -19T17:00:00+09:00\n対象: 京都（気温） / 京都府南部（天気・降水確率）
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:bc0ccaaed1326d1300b84fd5dc68d65f30fb4d89@geolonia.local
+DTSTAMP:20251219T215122Z
+DTSTART;VALUE=DATE:20251224
+DTEND;VALUE=DATE:20251225
+SUMMARY:☁️ 京都: 曇時々雨 / ☔70% / ↑13℃ ↓9℃ 🧥 / 🟡 / フリース / ブルゾン
+DESCRIPTION:☁️ 天気: 曇時々雨（コード 203）\n☔ 降水確率: 70%\n🧥 気温: ↑ 最高: 13℃ / ↓ 最低:
+  9℃\n🟡 信頼度: B\n\n🧥 おすすめ上着: フリース / ブルゾン\n\n発表官署: 京都地方気象台\n発表日時: 2025-1
+ 2-19T17:00:00+09:00\n対象: 京都（気温） / 京都府南部（天気・降水確率）
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:7b1b2d723239e8753949558598dad4ee8c661197@geolonia.local
+DTSTAMP:20251219T215122Z
+DTSTART;VALUE=DATE:20251225
+DTEND;VALUE=DATE:20251226
+SUMMARY:☁️ 京都: 曇一時雨 / 🌂50% / ↑13℃ ↓6℃ 🥶 / ⚠️ / フリース / ブルゾン
+DESCRIPTION:☁️ 天気: 曇一時雨（コード 202）\n🌂 降水確率: 50%\n🥶 気温: ↑ 最高: 13℃ / ↓ 最低:
+  6℃\n⚠️ 信頼度: C\n\n🧥 おすすめ上着: フリース / ブルゾン\n\n発表官署: 京都地方気象台\n発表日時: 2025-
+ 12-19T17:00:00+09:00\n対象: 京都（気温） / 京都府南部（天気・降水確率）
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:817f996d8fa5084b6eeb71ecd8e6d27ae81a6d55@geolonia.local
+DTSTAMP:20251219T215122Z
+DTSTART;VALUE=DATE:20251226
+DTEND;VALUE=DATE:20251227
+SUMMARY:☁️ 京都: 曇時々晴 / 30% / ↑11℃ ↓4℃ 🥶 / ✅ / フリース / ブルゾン
+DESCRIPTION:☁️ 天気: 曇時々晴（コード 201）\n 降水確率: 30%\n🥶 気温: ↑ 最高: 11℃ / ↓ 最低: 
+ 4℃\n✅ 信頼度: A\n\n🧥 おすすめ上着: フリース / ブルゾン\n\n発表官署: 京都地方気象台\n発表日時: 2025-12
+ -19T17:00:00+09:00\n対象: 京都（気温） / 京都府南部（天気・降水確率）
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR
